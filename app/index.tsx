@@ -14,14 +14,12 @@ export default function index() {
         const checkSecureStore = async () => {
             try {
                 const storedUser = await SecureStore.getItemAsync("user");
-                console.log("[DEBUG] Isi SecureStore User:", storedUser);
             } catch (error) {
                 console.error("[SecureStore Error]", error);
             }
         };
 
         checkSecureStore();
-        console.log("[DEBUG] user.isVerified:", user?.isVerified);
     }, [user]);
 
 

@@ -21,7 +21,7 @@ export default function SelesaiVerifikasi() {
 
                 if (newStatus === "verified") {
                     setTimeout(() => {
-                        router.replace("/pasien")
+                        router.replace("/")
                     }, 3000)
                 }
 
