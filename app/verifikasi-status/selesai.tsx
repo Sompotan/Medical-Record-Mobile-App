@@ -3,17 +3,28 @@ import api from "@/services/api";
 import {ActivityIndicator, View, Text} from "react-native";
 import * as Animatable from "react-native-animatable";
 import {Check, CheckCircle, Clock} from "lucide-react-native";
+import {useRouter} from "expo-router";
 
 export default function SelesaiVerifikasi() {
     const [status, setStatus] = useState<"loading" | "menunggu" | "verified">("loading")
     const [submittedAt, setSubmittedAt] = useState<string | null>(null)
 
+    const router = useRouter();
+
     useEffect(() => {
         const fetchStatus = async () => {
             try {
                 const res = await api.get("/pasien/verifikasi-status")
+                const newStatus = res.data.status
                 setStatus(res.data.status);
                 setSubmittedAt(res.data.diajukanPada)
+
+                if (newStatus === "verified") {
+                    setTimeout(() => {
+                        router.replace("/pasien")
+                    }, 3000)
+                }
+
             } catch (error) {
                 console.error("[Verifikasi] Gagal Mengambil Status : ", error)
             }

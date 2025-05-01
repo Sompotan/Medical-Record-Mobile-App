@@ -1,8 +1,8 @@
 import { View, Text, Alert } from "react-native";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { router } from "expo-router";
 import { useState } from "react";
-import { logoutApi } from "../../services/authService";
+import { logoutApi } from "@/services/authService";
 import ButtonPrimary from "../../components/common/ButtonPrimary";
 
 export default function Beranda() {
