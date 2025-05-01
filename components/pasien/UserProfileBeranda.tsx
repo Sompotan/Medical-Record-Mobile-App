@@ -1,11 +1,27 @@
 import {Image, View, Text} from "react-native";
 import {MaleUser} from "@/assets";
+import {User} from "lucide-react-native";
 
-export default function UserProfileBeranda() {
+type UserProfileBerandaProps = {
+    name?: string;
+    image?: string | null;
+}
+
+export default function UserProfileBeranda({name, image}: UserProfileBerandaProps) {
     return(
         <View className="flex flex-row items-center justify-start gap-2 ">
-            <MaleUser  />
-            <Text>Halo, John Doe</Text>
+            {image ? (
+                <Image
+                    source={{ uri: image }}
+                    className="w-[40px] h-[40px] rounded-full"
+                    resizeMode="cover"
+                />
+            ) : (
+                <MaleUser  />
+            )}
+
+
+            <Text>Halo, {name ? name : "Selamat Datang"}</Text>
         </View>
     )
 }

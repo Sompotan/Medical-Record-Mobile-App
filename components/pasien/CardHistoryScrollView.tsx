@@ -1,7 +1,7 @@
 import {ActivityIndicator, FlatList, ScrollView, View} from "react-native";
 import CardHistoryItem, {CardHistoryItemProps} from "@/components/pasien/CardHistoryItem";
 import {useEffect, useState} from "react";
-import {getRiwayatKunjungan} from "@/services/kunjunganService";
+import {getRiwayatKunjungan} from "@/services/pasien";
 
 export default function CardHistoryScrollView() {
     const [data, setData] = useState<CardHistoryItemProps[]>([]);
