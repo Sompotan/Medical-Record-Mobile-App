@@ -6,6 +6,7 @@ import History from "./common/history.svg"
 import HistoryOutline from "./common/history-outline.svg"
 import Notification from "./common/notification.svg"
 import Logout from "./common/logout.svg"
+import Left from "./common/left.svg"
 
 export {
     Home,
@@ -15,5 +16,6 @@ export {
     History,
     HistoryOutline,
     Notification,
-    Logout
+    Logout,
+    Left
 }
