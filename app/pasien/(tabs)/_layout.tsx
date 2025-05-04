@@ -11,7 +11,7 @@ export default function PasienTabLayout() {
                 name="index"
                 options={{
                     title: "Beranda",
-                    tabBarIcon: ({ color, focused }) => focused ? <Home color={color} /> : <HomeOutline color={color} />
+                    tabBarIcon: ({ color, focused }) => focused ? <Home color={color} /> : <HomeOutline color={color} />,
                 }}
             />
             <Tabs.Screen

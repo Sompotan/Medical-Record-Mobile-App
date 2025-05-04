@@ -43,13 +43,12 @@ export default function ListDokter() {
             data={data}
             keyExtractor={(item) => item.id}
             renderItem={({item}) => {
-                console.log(data)
                 return(
                     <ListItemDokter
                         id={item.id}
                         namaLengkap={item.namaLengkap}
                         foto_profil={item.foto_profil}
-                        path={`/form-kunjungan/${item.id}`}
+                        path={`/pasien/daftar-kunjungan/${item.id}`}
                     />
                 )
             }}

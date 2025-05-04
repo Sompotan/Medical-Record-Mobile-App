@@ -14,3 +14,17 @@ export const getDokterList = async() => {
     const res = await API.get("/dokter");
     return res.data;
 }
+
+export const getJadwalPraktekDokter = async (id: string) => {
+    const res = await API.get(`/pasien/dokter/${id}/jadwal-praktek`)
+    return res.data;
+}
+
+export const daftarKunjungan = async (data: {
+    tenagaMedisId: string;
+    tanggal_kunjungan: string;
+    alasanKunjungan: string;
+}) => {
+    const res = await API.post(`/pasien/kunjungan`, data);
+    return res.data;
+}

@@ -1,11 +1,22 @@
 import {Stack} from "expo-router";
+import {KeyboardAvoidingView} from "react-native";
+import {Platform} from "expo-modules-core";
 
 export default function PasienLayout() {
     return (
-        <Stack>
-            <Stack.Screen name="(tabs)" options={{
-                headerShown: false,
-            }} />
-        </Stack>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1}}
+        >
+            <Stack>
+                <Stack.Screen name="(tabs)" options={{
+                    headerShown: false,
+                }} />
+                <Stack.Screen name="daftar-kunjungan" options={{
+                    headerShown: false,
+                }} />
+            </Stack>
+        </KeyboardAvoidingView>
+
     )
 }
