@@ -10,8 +10,9 @@ export default function DokterLayout() {
         >
             <Stack>
                 <Stack.Screen name="(tabs)" options={{
-                    headerShown: true,
+                    headerShown: false,
                 }} />
+                <Stack.Screen name="kunjungan" options={{ headerShown: false }} />
             </Stack>
         </KeyboardAvoidingView>
 
