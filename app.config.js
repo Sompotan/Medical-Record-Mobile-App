@@ -43,7 +43,7 @@ export default {
     extra: {
       apiUrl: process.env.API_URL,
       supabaseUrl: process.env.SUPABASE_URL,
-      supabaseAnonKey: process.env.SUPABASE_ANON_KEY
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     }
   }
 }
