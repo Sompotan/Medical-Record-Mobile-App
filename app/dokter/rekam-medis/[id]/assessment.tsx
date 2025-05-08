@@ -1,87 +1,147 @@
-import {View, Text, ScrollView} from "react-native";
-import {AssessmentNoteForm, DiagnosisItem} from "@/types/rekam-medis/types";
+import {View, Text, TextInput, Pressable, Alert, ScrollView} from "react-native";
+import {useEffect, useState} from "react";
+import DiagnosisCombobox, {DiagnosisOption} from "@/components/dokter/rekam-medis/DiagnosisCombobox";
+import JenisDiagnosisSelect from "@/components/dokter/rekam-medis/JenisDiagnosisSelect";
+import DiagnosisItemCard from "@/components/dokter/rekam-medis/DiagnosisItemCard";
+import {useAutoSaveAssessment} from "@/hooks/useAutoSaveAssessment";
 import {useLocalSearchParams} from "expo-router";
-import {useCallback, useEffect, useState} from "react";
 import {autoSaveAssessmentNote, getAssessmentNote} from "@/services/rekamMedisAPI";
-import debounce from "lodash/debounce"
-import DiagnosisItemInput from "@/components/dokter/rekam-medis/DiagnosisItemInput";
+import useDebouncedEffect from "@/hooks/useDeboncedEffect";
 
-
-const initialForm: AssessmentNoteForm = {
-    diagnosis: []
+export type DiagnosisEntry = {
+    kodeKlinisId: string;
+    nama?: string;
+    jenisDiagnosis: "Utama" | "Banding" | "Lain";
+    deskripsi: string;
 }
 
 export default function AssessmentPage() {
     const {id: rekamMedisId} = useLocalSearchParams()
-    const [form, setForm] = useState<AssessmentNoteForm>(initialForm)
+    const [selectedDiagnosis, setSelectedDiagnosis] = useState<DiagnosisOption | null>(null)
+    const [opsiDiagnosis, setOpsiDiagnosis] = useState<"Utama" | "Banding" | "Lain" | "">("")
+    const [deskripsi, setDeskripsi] = useState("");
+    const [diagnosisList, setDiagnosisList] = useState<DiagnosisEntry[]>([])
 
-    const handleAddDiagnosis = (item: DiagnosisItem) => {
-        const updated = {
-            ...form,
-            diagnosis: [...form.diagnosis, item]
-        }
-        setForm(updated)
-        debouncedSave(updated)
-    }
 
-    const saveToBackend = async (data: AssessmentNoteForm)=> {
-        if (!rekamMedisId) return;
+    const handleAddDiagnosis = () => {
+        if (!selectedDiagnosis || !opsiDiagnosis) return;
 
-        try {
-            await autoSaveAssessmentNote(rekamMedisId as string, data);
+        const exists = diagnosisList.some((d) => d.jenisDiagnosis === opsiDiagnosis && (opsiDiagnosis === "Utama" || opsiDiagnosis === "Banding"));
+        if (exists) return alert(`Diagnosis ${opsiDiagnosis} hanya boleh satu.`)
 
-        } catch (error) {
-            console.error("Gagal menyimpan assessment: ", error)
+        const newEntry: DiagnosisEntry = {
+            kodeKlinisId: selectedDiagnosis.id,
+            nama: selectedDiagnosis.Display,
+            jenisDiagnosis: opsiDiagnosis,
+            deskripsi
         }
 
+        setDiagnosisList([...diagnosisList, newEntry])
+        setSelectedDiagnosis(null);
+        setOpsiDiagnosis("")
+        setDeskripsi("")
+
     }
 
-    const debouncedSave = useCallback(debounce(saveToBackend, 1000), [])
+    const handleRemove = (kodeKlinisId: string) => {
+        setDiagnosisList(diagnosisList.filter((d) => d.kodeKlinisId !== kodeKlinisId))
+    }
+
 
     useEffect(() => {
         const fetchData = async () => {
             if (!rekamMedisId) return;
             try {
-                const data = await getAssessmentNote(rekamMedisId as string)
-                setForm({
-                    diagnosis: data?.diagnosisPasien || []
-                });
+                const data = await getAssessmentNote(rekamMedisId as string);
+                if (data.diagnosisPasien) {
+                    const prefilled = data.diagnosisPasien.map((d: any) => ({
+                        kodeKlinisId: d.kodeKlinisId,
+                        nama: d.nama,
+                        jenisDiagnosis: d.jenisDiagnosis,
+                        deskripsi: d.deskripsi
+                    }))
+                    setDiagnosisList(prefilled)
+                }
             } catch (error) {
-                console.error("Gagal load assessment: ", error)
+                console.error("Gagal memuat assessment note:", error)
             }
-
-
         }
-
-        fetchData();
+        fetchData()
     }, [rekamMedisId]);
 
 
+    useDebouncedEffect(() => {
+        if (!rekamMedisId || diagnosisList.length === 0) return;
+
+        const isValid = diagnosisList.every(
+            d => d.kodeKlinisId && d.jenisDiagnosis && d.deskripsi !== undefined
+        );
+        if (!isValid) return;
+
+        const autosave = async () => {
+            const payload = {
+                diagnosisPasien: diagnosisList.map(({kodeKlinisId, jenisDiagnosis, deskripsi}) => ({
+                    kodeKlinisId,
+                    jenisDiagnosis,
+                    deskripsi
+                }))
+            };
+
+            try {
+                await autoSaveAssessmentNote(rekamMedisId as string, payload);
+            } catch (err) {
+                console.error("Gagal autosave assessment: ", err);
+            }
+        };
+
+        autosave();
+    }, [diagnosisList], 1200);
+
+
     return (
-        <ScrollView className="p-4 bg-white">
+        <ScrollView className="px-4">
+            <DiagnosisCombobox
+                label="Diagnosa"
+                value={selectedDiagnosis}
+                onChange={setSelectedDiagnosis}
+            />
 
-            <DiagnosisItemInput onAdd={handleAddDiagnosis} />
+            <JenisDiagnosisSelect
+                value={opsiDiagnosis}
+                onChange={setOpsiDiagnosis}
+            />
 
-            <View className="mt-4">
-                <Text className="font-medium text-base mb-2">Diagnosa Tersimpan</Text>
+            <Text className="font-medium mt-4 mb-1">Deskripsi Diagnosa</Text>
+            <TextInput
+                placeholder="Masukkan deskripsi diagnosa pasien..."
+                value={deskripsi}
+                onChangeText={setDeskripsi}
+                multiline
+                textAlignVertical="top"
+                className="border rounded-md px-3 py-2 bg-white text-sm h-24"
+            />
 
-                {form.diagnosis.length === 0 ? (
-                    <Text className="text-gray-500 text-sm">Belum ada diagnosa ditambahkan.</Text>
-                ) : (
-                    form.diagnosis.map((d, idx) => (
-                        <View
-                            key={idx}
-                            className="border p-3 rounded-md mb-2 bg-gray-50"
-                        >
-                            <Text className="font-semibold text-sm mb-1">Jenis: {d.jenis}</Text>
-                            <Text className="text-sm text-gray-700">Deskripsi: {d.deskripsi}</Text>
-                            <Text className="text-xs mt-1 text-gray-400">
-                                Kode Klinis ID: {d.kodeKlinisId}
-                            </Text>
-                        </View>
-                    ))
-                )}
-            </View>
+            <Pressable
+                className={`mt-4 py-3 px-4 rounded-md ${selectedDiagnosis && opsiDiagnosis ? "bg-black" : "bg-gray-300"}`}
+                onPress={handleAddDiagnosis}
+                disabled={!selectedDiagnosis || !opsiDiagnosis}
+            >
+                <Text className="text-white text-center font-semibold">+ Tambah Diagnosa</Text>
+            </Pressable>
+
+
+            {/* Diagnosis Section */}
+            {["Utama", "Banding", "Lain"].map((jenis) =>
+                diagnosisList.some(d => d.jenisDiagnosis === jenis) ? (
+                    <View key={jenis} className="mt-6">
+                        <Text className="font-semibold mb-2">Diagnosa {jenis}</Text>
+                        {diagnosisList.filter(d => d.jenisDiagnosis === jenis).map((item) => (
+                            <DiagnosisItemCard key={item.kodeKlinisId} item={item} onRemove={handleRemove} />
+                        ))}
+                    </View>
+                ) : null
+            )}
+
         </ScrollView>
     )
 }

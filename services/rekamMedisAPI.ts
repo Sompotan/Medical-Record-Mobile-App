@@ -1,5 +1,6 @@
 import {ObjectiveNoteForm, SubjectiveNotePayload} from "@/types/rekam-medis/types";
 import API from "@/services/api";
+import {DiagnosisEntry} from "@/app/dokter/rekam-medis/[id]/assessment";
 
 export const autoSaveSubjectiveNote = async (rekamMedisId: string, data: SubjectiveNotePayload) => {
     const res =  await API.patch(`/dokter/rekam-medis/${rekamMedisId}/subjective`, data)
@@ -37,13 +38,17 @@ export const fetchKodeKlinis = async (search: string) => {
 }
 
 export const getAssessmentNote = async (rekamMedisId: string) => {
-    const res = await API.get(`/dokter/rekam-medis/${rekamMedisId}/assessment`)
-    return res.data;
+    try {
+        const res = await API.get(`/dokter/rekam-medis/${rekamMedisId}/assessment`);
+        return res.data;
+    } catch (error) {
+        console.error("[getAssessmentNote] Gagal mengambil assessment note:", error);
+        return { diagnosisPasien: [] };
+    }
 }
 
-export const autoSaveAssessmentNote = async (rekamMedisId: string, data: any) => {
-    const res = await API.patch(`/dokter/rekam-medis/${rekamMedisId}/assessment`, data)
-    return res.data;
+export const autoSaveAssessmentNote = async (rekamMedisId: string, data: {diagnosisPasien: DiagnosisEntry[]}) => {
+    return await API.patch(`/dokter/rekam-medis/${rekamMedisId}/assessment`, data)
 }
 
 export const getPlanningNote = async (rekamMedisId: string) => {
