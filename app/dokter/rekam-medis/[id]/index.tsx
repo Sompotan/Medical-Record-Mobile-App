@@ -4,7 +4,7 @@ import {FieldInputKey, SubjectiveNoteForm} from "@/types/rekam-medis/types";
 import {useLocalSearchParams} from "expo-router";
 import {useCallback, useEffect, useState} from "react";
 import {autoSaveSubjectiveNote, getSubjectiveNote} from "@/services/rekamMedisAPI";
-import {debounce} from "expo-dev-launcher/bundle/functions/debounce";
+import debounce from "lodash/debounce"
 
 const initialForm: SubjectiveNoteForm = {
     keluhanUtama: "",
@@ -24,29 +24,31 @@ export default function SubjectivePage() {
 
     const saveToBackend = async (data: SubjectiveNoteForm) => {
         if (!rekamMedisId) return;
-
         await autoSaveSubjectiveNote(rekamMedisId as string, {
             keluhanPasien: [
-                {deskripsi: data.keluhanUtama, jenis: "Utama"},
-                {deskripsi: data.keluhanTambahan, jenis: "Tambahan"}
-            ],
+                {deskripsi: data.keluhanUtama, jenisKeluhan: "Utama"},
+                {deskripsi: data.keluhanTambahan, jenisKeluhan: "Tambahan"}
+            ].filter(item => item.deskripsi !== ""),
             riwayatPenyakit: [
-                {deskripsi: data.riwayatSekarang, jenis: "Sekarang"},
-                {deskripsi: data.riwayatDahulu, jenis: "Dahulu"},
-                {deskripsi: data.riwayatKeluarga, jenis: "Keluarga"}
+                {deskripsi: data.riwayatSekarang, jenisRiwayat: "Sekarang"},
+                {deskripsi: data.riwayatDahulu, jenisRiwayat: "Dahulu"},
+                {deskripsi: data.riwayatKeluarga, jenisRiwayat: "Keluarga"}
             ],
             alergiPasien: [
-                {deskripsi: data.alergiObat, jenis: "Obat"},
-                {deskripsi: data.alergiMakanan, jenis: "Makanan"}
+                {deskripsi: data.alergiObat, jenisAlergi: "Obat"},
+                {deskripsi: data.alergiMakanan, jenisAlergi: "Makanan"}
             ],
             obatDikonsumsi: [
-                {deskripsi: data.obatDikonsumsi}
+                {keterangan: data.obatDikonsumsi}
             ]
         })
 
     }
 
-    const debouncedSave = useCallback(debounce(saveToBackend, 1000), [])
+    const debouncedSave = useCallback(
+        debounce(saveToBackend, 1200, { leading: false, trailing: true }),
+        []
+    );
 
     const handelChange = (field: FieldInputKey, value: string) => {
         const updated = {...form, [field]: value};
@@ -61,15 +63,16 @@ export default function SubjectivePage() {
             try {
                 const data = await getSubjectiveNote(rekamMedisId as string);
 
+
                 setForm({
-                    keluhanUtama: data.keluhanPasien.find((k: { jenis: string; }) => k.jenis === "Utama")?.deskripsi || "",
-                    keluhanTambahan: data.keluhanPasien.find((k: { jenis: string; }) => k.jenis === "Tambahan")?.deskripsi || "",
-                    riwayatSekarang: data.riwayatPenyakit.find((k: { jenis: string; }) => k.jenis === "Sekarang")?.deskripsi || "",
-                    riwayatDahulu: data.riwayatPenyakit.find((k: { jenis: string; }) => k.jenis === "Dahulu")?.deskripsi || "",
-                    riwayatKeluarga: data.riwayatPenyakit.find((k: { jenis: string; }) => k.jenis === "Keluarga")?.deskripsi || "",
-                    alergiObat: data.alergiPasien.find((k: { jenis: string; }) => k.jenis === "Obat")?.deskripsi || "",
-                    alergiMakanan: data.alergiPasien.find((k: { jenis: string; }) => k.jenis === "Makanan")?.deskripsi || "",
-                    obatDikonsumsi: data.obatDikonsumsi?.[0]?.deskripsi || ""
+                    keluhanUtama: data.keluhanPasien.find((k: { jenisKeluhan: string; }) => k.jenisKeluhan === "Utama")?.deskripsi || "",
+                    keluhanTambahan: data.keluhanPasien.find((k: { jenisKeluhan: string; }) => k.jenisKeluhan === "Tambahan")?.deskripsi || "",
+                    riwayatSekarang: data.riwayatPenyakit.find((k: { jenisRiwayat: string; }) => k.jenisRiwayat === "Sekarang")?.deskripsi || "",
+                    riwayatDahulu: data.riwayatPenyakit.find((k: { jenisRiwayat: string; }) => k.jenisRiwayat === "Dahulu")?.deskripsi || "",
+                    riwayatKeluarga: data.riwayatPenyakit.find((k: { jenisRiwayat: string; }) => k.jenisRiwayat === "Keluarga")?.deskripsi || "",
+                    alergiObat: data.alergiPasien.find((k: { jenisAlergi: string; }) => k.jenisAlergi === "Obat")?.deskripsi || "",
+                    alergiMakanan: data.alergiPasien.find((k: { jenisAlergi: string; }) => k.jenisAlergi === "Makanan")?.deskripsi || "",
+                    obatDikonsumsi: data.obatDikonsumsi?.[0]?.keterangan || ""
                 })
 
 

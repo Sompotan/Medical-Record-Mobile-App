@@ -78,7 +78,11 @@ export default function CustomTabBar({
                         });
 
                         if (!isFocused && !event.defaultPrevented) {
-                            navigation.navigate(route.name);
+                            navigation.navigate({
+                                name: route.name,
+                                params: { id: rekamMedisId },
+                                merge: true,
+                            });
                         }
                     };
 
