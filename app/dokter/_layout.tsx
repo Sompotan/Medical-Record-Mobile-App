@@ -13,6 +13,7 @@ export default function DokterLayout() {
                     headerShown: false,
                 }} />
                 <Stack.Screen name="kunjungan" options={{ headerShown: false }} />
+                <Stack.Screen name="rekam-medis" options={{ headerShown: false }} />
             </Stack>
         </KeyboardAvoidingView>
 

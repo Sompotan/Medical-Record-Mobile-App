@@ -12,9 +12,10 @@ export type RekamMedicsCardProps = {
     id: string;
     tanggal: string;
     pasien: string;
+    dokter: string;
 }
 
-export default function RekamMedisCard({id, tanggal, pasien}: RekamMedicsCardProps) {
+export default function RekamMedisCard({id, tanggal, pasien, dokter}: RekamMedicsCardProps) {
     const [open, setOpen] = useState(false);
     const [detail, setDetail] = useState<any>(null)
     const height = useSharedValue(0); // default height collapsed
@@ -46,7 +47,7 @@ export default function RekamMedisCard({id, tanggal, pasien}: RekamMedicsCardPro
         <View className="bg-white rounded-lg border border-gray-300 ">
             <TouchableOpacity onPress={toggleCard} className="px-4 pt-4 flex flex-col gap-4">
                 <View className="flex flex-col">
-                    <Text className="text-lg font-semibold">Pemeriksaan Umum</Text>
+                    <Text className="text-lg font-semibold">{dokter}</Text>
                     <Text>{pasien}</Text>
                 </View>
                 <View className="flex flex-row items-center justify-between">
