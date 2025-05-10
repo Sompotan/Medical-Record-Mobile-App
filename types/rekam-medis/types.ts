@@ -1,3 +1,5 @@
+import keywords from "ajv-keywords/src/keywords";
+
 export type FieldInputKey =
     | "keluhanUtama"
     | "keluhanTambahan"
@@ -67,4 +69,76 @@ export type RencanaKlinisItem = {
 
 export type PlanningNoteForm = {
     rencanaKlinis: RencanaKlinisItem[]
+}
+
+export type ResepObatItem = {
+    obatId: string;
+    frekuensi: string;
+    durasi: string;
+    aturan_pakai: string;
+    catatan?: string;
+}
+
+export type RencanaEntry = {
+    kodeKlinisId?: string;
+    jenisRencana: JenisRencana;
+    jenisLayanan: JenisLayanan;
+    deskripsi : string;
+    tanggalRencana?: string;
+    resepObat?: ResepObatItem[]
+}
+
+export type JenisLayanan =
+    | "KONTROL_ULANG"
+    | "PENGOBATAN_JALAN"
+    | "OBSERVASI"
+    | "EDUKASI_PASIEN"
+    | "TINDAKAN_RINGAN"
+    | "";
+
+export type JenisLayananSelectProps = {
+    value: JenisLayanan | undefined;
+    onChange: (val: JenisLayanan) => void;
+}
+
+export type JenisRencana = "Tindakan" | "Monitoring" | "Edukasi" | "Lainnya"
+
+export type JenisRencanaSelectProps = {
+    value: JenisRencana | undefined;
+    onChange: (val: JenisRencana) => void;
+}
+
+export type TanggalMonitoringPickerProps = {
+    value: Date | null;
+    onChange: (date: Date) => void;
+    allowedDays: string[];
+}
+
+export type ObatOption = {
+    id: string;
+    label: string;
+}
+
+export type ResepObatFormProps = {
+    value: ResepObatItem[];
+    onChange: (list: ResepObatItem[]) => void;
+    obatOptions: ObatOption[]
+    onSearch: (keyword: string) => void;
+}
+
+export type DeskripsiInputProps = {
+    value: string;
+    onChange: (text: string) => void;
+}
+
+export type RencanaItemCardProps = {
+    item: RencanaEntry
+    index: number
+    onRemove: (index: number) => void;
+    getObatLabelById?: (id: string) => string;
+}
+
+export type GetPlanningNoteResponse = {
+    message: string;
+    rencanaKlinis: RencanaEntry[];
 }

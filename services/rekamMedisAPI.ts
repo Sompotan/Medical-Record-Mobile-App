@@ -1,4 +1,4 @@
-import {ObjectiveNoteForm, SubjectiveNotePayload} from "@/types/rekam-medis/types";
+import {GetPlanningNoteResponse, ObatOption, ObjectiveNoteForm, SubjectiveNotePayload} from "@/types/rekam-medis/types";
 import API from "@/services/api";
 import {DiagnosisEntry} from "@/app/dokter/rekam-medis/[id]/assessment";
 
@@ -51,7 +51,7 @@ export const autoSaveAssessmentNote = async (rekamMedisId: string, data: {diagno
     return await API.patch(`/dokter/rekam-medis/${rekamMedisId}/assessment`, data)
 }
 
-export const getPlanningNote = async (rekamMedisId: string) => {
+export const getPlanningNote = async (rekamMedisId: string) : Promise<GetPlanningNoteResponse> => {
     const res = await API.get(`/dokter/rekam-medis/${rekamMedisId}/planning`)
     return res.data;
 }
@@ -59,4 +59,9 @@ export const getPlanningNote = async (rekamMedisId: string) => {
 export const autoSavePlanningNote = async (rekamMedisId: string, data: any) => {
     const res = await API.patch(`/dokter/rekam-medis/${rekamMedisId}/planning`, data)
     return res.data;
+}
+
+export const fetchObatOptions = async (keyword: string): Promise<ObatOption[]> => {
+    const res = await API.get(`/dokter/obat?search=${encodeURIComponent(keyword)}`)
+    return res.data
 }
