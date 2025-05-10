@@ -9,7 +9,7 @@ export type TextInputFieldProps = {
 
 export default function TextInputField({label, placeholder, onChange, value} : TextInputFieldProps) {
     return (
-        <View className="mb-4">
+        <View className="mb-4 bg-white p-4 rounded-xl shadow-md">
             <Text className="font-medium text-base mb-1">{label}</Text>
             <TextInput
                 multiline
@@ -17,7 +17,7 @@ export default function TextInputField({label, placeholder, onChange, value} : T
                 value={value}
                 onChangeText={onChange}
                 textAlignVertical="top"
-                className="border border-gray-300 rounded-lg p-3 text-sm bg-white h-[80px]"
+                className={`${value ? "border-b border-black" : "border-b border-gray-300"} p-3 text-sm bg-white `}
             />
         </View>
     )

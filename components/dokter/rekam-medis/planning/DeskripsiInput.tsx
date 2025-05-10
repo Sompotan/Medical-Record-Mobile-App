@@ -11,7 +11,7 @@ export default function DeskripsiInput({value, onChange}: DeskripsiInputProps) {
                 onChangeText={onChange}
                 multiline
                 textAlignVertical="top"
-                className="border rounded-md px-3 py-2 bg-white text-sm h-24"
+                className="rounded-xl px-3 py-2 bg-white shadow-md text-sm h-24"
             />
         </View>
     )

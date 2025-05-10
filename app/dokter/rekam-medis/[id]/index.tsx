@@ -88,7 +88,7 @@ export default function SubjectivePage() {
 
     return (
         <ScrollView
-            className="p-4 bg-white"
+            className="p-4"
             contentContainerStyle={{
                 paddingBottom: 20
             }}

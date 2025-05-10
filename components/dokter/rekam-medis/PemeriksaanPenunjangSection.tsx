@@ -8,7 +8,7 @@ export type PemeriksaanPenunjangSectionProps = {
 
 export default function PemeriksaanPenunjangSection({value, onChange}: PemeriksaanPenunjangSectionProps) {
     return (
-        <View className="mb-6 bg-white rounded-xl p-4">
+        <View className="mb-10 bg-white rounded-xl p-4 shadow-md">
             <Text className="font-medium text-xl mb-2">Pemeriksaan Penunjang</Text>
             <TextInput
                 multiline

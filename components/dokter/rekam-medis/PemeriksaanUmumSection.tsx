@@ -19,7 +19,7 @@ export default function PemeriksaanUmumSection({form, onChange} : PemeriksaanUmu
     const gcsTotal = form.gcsEye + form.gcsVerbal + form.gcsMotor;
 
     return (
-        <View className="mb-6 bg-white rounded-xl p-4">
+        <View className="mb-6 bg-white rounded-xl p-4 shadow-md">
             <Text className="font-medium text-xl mb-2">Keadaan Umum</Text>
             <View className="flex-row mb-4 items-center justify-between px-2">
                 {options.map((option) => (

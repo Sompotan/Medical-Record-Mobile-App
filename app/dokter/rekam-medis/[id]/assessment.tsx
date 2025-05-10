@@ -111,14 +111,14 @@ export default function AssessmentPage() {
                 onChange={setOpsiDiagnosis}
             />
 
-            <Text className="font-medium mt-4 mb-1">Deskripsi Diagnosa</Text>
+            <Text className="mb-1">Deskripsi Diagnosa</Text>
             <TextInput
                 placeholder="Masukkan deskripsi diagnosa pasien..."
                 value={deskripsi}
                 onChangeText={setDeskripsi}
                 multiline
                 textAlignVertical="top"
-                className="border rounded-md px-3 py-2 bg-white text-sm h-24"
+                className="rounded-xl shadow-md shadow-gray-400 border border-gray-300 px-3 py-2 bg-white text-sm h-24"
             />
 
             <Pressable
@@ -133,8 +133,8 @@ export default function AssessmentPage() {
             {/* Diagnosis Section */}
             {["Utama", "Banding", "Lain"].map((jenis) =>
                 diagnosisList.some(d => d.jenisDiagnosis === jenis) ? (
-                    <View key={jenis} className="mt-6">
-                        <Text className="font-semibold mb-2">Diagnosa {jenis}</Text>
+                    <View key={jenis} className="mt-6 bg-white p-4">
+                        <Text className="font-semibold text-xl mb-2">Diagnosa {jenis}</Text>
                         {diagnosisList.filter(d => d.jenisDiagnosis === jenis).map((item) => (
                             <DiagnosisItemCard key={item.kodeKlinisId} item={item} onRemove={handleRemove} />
                         ))}

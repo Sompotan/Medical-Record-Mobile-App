@@ -6,7 +6,7 @@ import {id as localeID} from "date-fns/locale";
 
 export default function RencanaItemCard ({item, index, onRemove, getObatLabelById}: RencanaItemCardProps) {
     return (
-        <View className="mt-4 p-3 border rounded-md bg-white">
+        <View className="mt-4 p-3 rounded-xl bg-white shadow-md">
             <View className="flex-row justify-between items-center mb-2">
                 <Text className="font-semibold text-sm">
                     {index + 1}. Rencana {item.jenisRencana}
@@ -30,7 +30,6 @@ export default function RencanaItemCard ({item, index, onRemove, getObatLabelByI
                             <Text className="text-sm">
                                 • {getObatLabelById?.(obat.obatId) ?? `Obat ID: ${obat.obatId}`}
                             </Text>
-                            <Text className="text-sm ml-2">Dosis: {obat.dosis}</Text>
                             <Text className="text-sm ml-2">Frekuensi: {obat.frekuensi}</Text>
                             <Text className="text-sm ml-2">Durasi: {obat.durasi}</Text>
                             <Text className="text-sm ml-2">Aturan: {obat.aturan_pakai}</Text>

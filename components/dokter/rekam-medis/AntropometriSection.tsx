@@ -13,7 +13,7 @@ export type AntropometriSectionProps = {
 
 export default function AntropometriSection({form, onChange}: AntropometriSectionProps) {
     return (
-        <View className="mb-6 bg-white rounded-xl p-4">
+        <View className="mb-6 bg-white rounded-xl p-4 shadow-md">
             <Text className="font-medium text-xl mb-2">Antropometri</Text>
 
             <View className="p-2 rounded-lg space-y-3 gap-3">

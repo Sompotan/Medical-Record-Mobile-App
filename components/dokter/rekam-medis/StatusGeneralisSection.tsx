@@ -32,7 +32,7 @@ const Field = ({ label, value, onChange }: {label: string, value: string, onChan
 
 export default function StatusGeneralisSection({form, onChange}: StatusGeneralisSectionProps) {
     return (
-        <View className="mb-6 bg-white rounded-xl p-4">
+        <View className="mb-6 bg-white rounded-xl p-4 shadow-md">
             <Text className="font-medium text-xl mb-2">Status Generalis</Text>
             <View className="p-2 gap-6">
                 <Field

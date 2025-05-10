@@ -22,7 +22,7 @@ export default function TanggalMonitoringPicker({value, onChange, allowedDays}: 
         <View className="mt-4">
             <Text className="font-medium mb-1">Tanggal Monitoring</Text>
             <Pressable
-                className="border rounded-md px-3 py-3 bg-white"
+                className="rounded-xl px-3 py-3 bg-white shadow-md"
                 onPress={() => setPickerVisible(true)}
             >
                 <Text className="text-gray-800">

@@ -15,7 +15,7 @@ export type TandaVitalSectionProps = {
 
 export default function TandaVitalSection({form, onChange} : TandaVitalSectionProps) {
     return (
-        <View className="mb-6 bg-white rounded-xl p-4">
+        <View className="mb-6 bg-white rounded-xl p-4 shadow-md">
             <Text className="font-medium text-xl">Tanda Vital</Text>
 
             <View className="p-2 rounded-lg gap-3">

@@ -7,7 +7,7 @@ export default function JenisLayananSelect ({value, onChange}: JenisLayananSelec
     return (
         <View className="mt-4">
             <Text className="font-medium mb-1">Jenis Layanan</Text>
-            <View className="border rounded-md bg-white">
+            <View className="rounded-xl bg-white shadow-md">
                 <Picker
                     selectedValue={value}
                     onValueChange={(val) => onChange(val)}
