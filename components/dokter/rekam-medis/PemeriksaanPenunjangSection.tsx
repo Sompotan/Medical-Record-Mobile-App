@@ -8,13 +8,13 @@ export type PemeriksaanPenunjangSectionProps = {
 
 export default function PemeriksaanPenunjangSection({value, onChange}: PemeriksaanPenunjangSectionProps) {
     return (
-        <View className="mb-6">
-            <Text className="font-medium text-base mb-2">Pemeriksaan Penunjang</Text>
+        <View className="mb-6 bg-white rounded-xl p-4">
+            <Text className="font-medium text-xl mb-2">Pemeriksaan Penunjang</Text>
             <TextInput
                 multiline
                 textAlignVertical="top"
                 placeholder="Masukkkan catatan pemeriksaan penunjang seperti hasil lab, radiologi, dsb..."
-                className="h-[120px] border px-3 py-2 rounded-md text-sm bg-white"
+                className="border-b px-3 py-2 rounded-md text-sm bg-white"
                 value={value}
                 onChangeText={onChange}
             />

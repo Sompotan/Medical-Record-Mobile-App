@@ -15,12 +15,12 @@ export type StatusGeneralisSectionProps = {
 
 const Field = ({ label, value, onChange }: {label: string, value: string, onChange: (text: string) => void})=> {
     return (
-        <View className="mb-4">
+        <View>
             <Text className="text-sm mb-1">{label}</Text>
             <TextInput
                 multiline
                 textAlignVertical="top"
-                className="h-[100px] border px-3 py-2 rounded-md text-sm bg-white"
+                className={`${value ? "border-b border-black w-full" : "border-b border-gray-300"} w-full px-2 py-1 rounded-md mt-1`}
                 placeholder={`Masukkan status generalis bagian ${label.toLowerCase()}...`}
                 value={value}
                 onChangeText={onChange}
@@ -32,35 +32,35 @@ const Field = ({ label, value, onChange }: {label: string, value: string, onChan
 
 export default function StatusGeneralisSection({form, onChange}: StatusGeneralisSectionProps) {
     return (
-        <View className="mb-6">
-            <Text className="font-medium text-base mb-2">Status Generalis</Text>
-
-            <Field
-                label="Kepala & Leher"
-                value={form.kepalaLeher}
-                onChange={(v) => onChange("kepalaLeher", v)}
-            />
-            <Field
-                label="Thorax"
-                value={form.thorax}
-                onChange={(v) => onChange("thorax", v)}
-            />
-            <Field
-                label="Abdomen"
-                value={form.abdomen}
-                onChange={(v) => onChange("abdomen", v)}
-            />
-            <Field
-                label="Ekstremitas"
-                value={form.ekstremitas}
-                onChange={(v) => onChange("ekstremitas", v)}
-            />
-            <Field
-                label="Lainnya"
-                value={form.lainnya}
-                onChange={(v) => onChange("lainnya", v)}
-            />
-
+        <View className="mb-6 bg-white rounded-xl p-4">
+            <Text className="font-medium text-xl mb-2">Status Generalis</Text>
+            <View className="p-2 gap-6">
+                <Field
+                    label="Kepala & Leher"
+                    value={form.kepalaLeher}
+                    onChange={(v) => onChange("kepalaLeher", v)}
+                />
+                <Field
+                    label="Thorax"
+                    value={form.thorax}
+                    onChange={(v) => onChange("thorax", v)}
+                />
+                <Field
+                    label="Abdomen"
+                    value={form.abdomen}
+                    onChange={(v) => onChange("abdomen", v)}
+                />
+                <Field
+                    label="Ekstremitas"
+                    value={form.ekstremitas}
+                    onChange={(v) => onChange("ekstremitas", v)}
+                />
+                <Field
+                    label="Lainnya"
+                    value={form.lainnya}
+                    onChange={(v) => onChange("lainnya", v)}
+                />
+            </View>
         </View>
     )
 }

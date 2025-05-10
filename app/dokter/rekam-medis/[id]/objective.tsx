@@ -206,7 +206,7 @@ export default function ObjectivePage() {
 
 
     return (
-        <ScrollView className="p-4 bg-white">
+        <ScrollView className="p-4 ">
             <PemeriksaanUmumSection
                 form={{
                     keadaanUmum: form.pemeriksaanUmum.keadaanUmum,
