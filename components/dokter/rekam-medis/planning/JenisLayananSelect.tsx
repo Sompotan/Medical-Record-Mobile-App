@@ -1,16 +1,23 @@
-import {JenisLayananSelectProps} from "@/types/rekam-medis/types";
-import {View, Text} from "react-native";
-import {Picker} from "@react-native-picker/picker";
-import {JENIS_LAYANAN_OPTIONS} from "@/constants/rencanaOptions";
+import { JenisLayananSelectProps } from "@/types/rekam-medis/types";
+import { View, Text } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { JENIS_LAYANAN_OPTIONS } from "@/constants/rencanaOptions";
 
-export default function JenisLayananSelect ({value, onChange}: JenisLayananSelectProps) {
+type Props = JenisLayananSelectProps & {
+    disabled?: boolean;
+};
+
+export default function JenisLayananSelect({ value, onChange, disabled = false }: Props) {
     return (
         <View className="mt-4">
             <Text className="font-medium mb-1">Jenis Layanan</Text>
-            <View className="rounded-xl bg-white shadow-md">
+            <View className={`rounded-xl bg-white shadow-md ${disabled ? "opacity-50" : ""}`}>
                 <Picker
+                    enabled={!disabled}
                     selectedValue={value}
-                    onValueChange={(val) => onChange(val)}
+                    onValueChange={(val) => {
+                        if (!disabled) onChange(val);
+                    }}
                     mode="dropdown"
                 >
                     <Picker.Item label="Pilih jenis layanan..." value={undefined} />
@@ -20,5 +27,5 @@ export default function JenisLayananSelect ({value, onChange}: JenisLayananSelec
                 </Picker>
             </View>
         </View>
-    )
+    );
 }

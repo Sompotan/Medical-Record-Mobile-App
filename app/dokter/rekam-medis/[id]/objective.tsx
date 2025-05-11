@@ -1,15 +1,17 @@
-import {View, Text, ScrollView} from "react-native";
-import {ObjectiveNoteForm} from "@/types/rekam-medis/types";
-import {useLocalSearchParams} from "expo-router";
-import {useCallback, useEffect, useState} from "react";
-import debounce from "lodash/debounce"
-import {autoSaveObjectiveNote, getObjectiveNote} from "@/services/rekamMedisAPI";
+import { View, Text, ScrollView } from "react-native";
+import { ObjectiveNoteForm } from "@/types/rekam-medis/types";
+import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import debounce from "lodash/debounce";
+import {
+    autoSaveObjectiveNote,
+    getObjectiveNote,
+} from "@/services/rekamMedisAPI";
 import PemeriksaanUmumSection from "@/components/dokter/rekam-medis/PemeriksaanUmumSection";
 import TandaVitalSection from "@/components/dokter/rekam-medis/TandaVitalSection";
 import AntropometriSection from "@/components/dokter/rekam-medis/AntropometriSection";
 import StatusGeneralisSection from "@/components/dokter/rekam-medis/StatusGeneralisSection";
 import PemeriksaanPenunjangSection from "@/components/dokter/rekam-medis/PemeriksaanPenunjangSection";
-
 
 const initialForm: ObjectiveNoteForm = {
     pemeriksaanUmum: {
@@ -26,7 +28,7 @@ const initialForm: ObjectiveNoteForm = {
     },
     antropometri: {
         beratBadan: 0,
-        tinggiBadan:0,
+        tinggiBadan: 0,
         imt: 0,
     },
     statusGeneralis: {
@@ -36,135 +38,48 @@ const initialForm: ObjectiveNoteForm = {
         ekstremitas: "",
         lainnya: "",
     },
-    pemeriksaanPenunjang: ""
-}
-
+    pemeriksaanPenunjang: "",
+};
 
 export default function ObjectivePage() {
-    const {id: rekamMedisId} = useLocalSearchParams()
-    const [form, setForm] = useState<ObjectiveNoteForm>(initialForm)
+    const { id: rekamMedisId } = useLocalSearchParams();
+    const { readonly } = useGlobalSearchParams();
+    const isReadOnly = readonly === "true";
+
+    const [form, setForm] = useState<ObjectiveNoteForm>(initialForm);
 
     const saveToBackend = async (data: ObjectiveNoteForm) => {
-        if (!rekamMedisId) return;
-
+        if (!rekamMedisId || isReadOnly) return;
         try {
-            await autoSaveObjectiveNote(rekamMedisId as string, {
-                pemeriksaanUmum: {
-                    keadaanUmum: data.pemeriksaanUmum.keadaanUmum,
-                    gcsEye: data.pemeriksaanUmum.gcsEye,
-                    gcsVerbal: data.pemeriksaanUmum.gcsVerbal,
-                    gcsMotor: data.pemeriksaanUmum.gcsMotor
-                },
-                tandaVital: {
-                    tekananDarah: data.tandaVital.tekananDarah,
-                    nadi: data.tandaVital.nadi,
-                    suhu: data.tandaVital.suhu,
-                    frekuensiNafas: data.tandaVital.frekuensiNafas
-                },
-                antropometri: {
-                    beratBadan: data.antropometri.beratBadan,
-                    tinggiBadan: data.antropometri.tinggiBadan,
-                    imt: data.antropometri.imt
-                },
-                statusGeneralis: {
-                    kepalaLeher: data.statusGeneralis.kepalaLeher,
-                    thorax: data.statusGeneralis.thorax,
-                    abdomen: data.statusGeneralis.abdomen,
-                    ekstremitas: data.statusGeneralis.ekstremitas,
-                    lainnya: data.statusGeneralis.lainnya
-                },
-                pemeriksaanPenunjang: data.pemeriksaanPenunjang
-            });
+            await autoSaveObjectiveNote(rekamMedisId as string, data);
         } catch (error) {
-            console.error("Gagal menyimpan objective: ", error)
+            console.error("Gagal menyimpan objective: ", error);
         }
-
-    }
+    };
 
     const debouncedSave = useCallback(
         debounce(saveToBackend, 1200, { leading: false, trailing: true }),
-        []
+        [rekamMedisId, isReadOnly]
     );
 
-    const handleChangePemeriksaanUmum = (field: keyof ObjectiveNoteForm["pemeriksaanUmum"], value: any) => {
-
+    const updateForm = (key: keyof ObjectiveNoteForm, subKey: string, value: any) => {
         const updated = {
             ...form,
-            pemeriksaanUmum: {
-                ...form.pemeriksaanUmum,
-                [field]: value
-            }
+            [key]: {
+                ...(form[key] as object),
+                [subKey]: value,
+            },
         };
         setForm(updated);
-
-        debouncedSave(updated)
-    }
-
-    const handleChangeTandaVital = (field: keyof ObjectiveNoteForm["tandaVital"], value: any) => {
-
-        const updated = {
-            ...form,
-            tandaVital: {
-                ...form.tandaVital,
-                [field]: value
-            }
-        };
-        setForm(updated);
-
-        debouncedSave(updated)
-    }
-
-    const handleChangeAntropometri = (field: keyof ObjectiveNoteForm["antropometri"], value: any) => {
-
-
-        const updated = {
-            ...form,
-            antropometri: {
-                ...form.antropometri,
-                [field]: value
-            }
-        };
-        setForm(updated);
-
-        debouncedSave(updated)
-    }
-
-    const handleChangeStatusGeneralis = (field: keyof ObjectiveNoteForm["statusGeneralis"], value: any) => {
-
-        const updated = {
-            ...form,
-            statusGeneralis: {
-                ...form.statusGeneralis,
-                [field]: value
-            }
-        };
-        setForm(updated);
-
-        debouncedSave(updated)
-    }
-
-    const handleChangePemeriksaanPenunjang = (field: keyof ObjectiveNoteForm, value: any) => {
-
-        const updated = {
-            ...form,
-            [field]: value
-        };
-        setForm(updated);
-
-        debouncedSave(updated)
-    }
-
-
-
+        debouncedSave(updated);
+    };
 
     useEffect(() => {
-        const fetchData = async() => {
+        const fetchData = async () => {
             if (!rekamMedisId) return;
-
             try {
                 const data = await getObjectiveNote(rekamMedisId as string);
-
-                const prefilledForm: ObjectiveNoteForm = {
+                const prefilled: ObjectiveNoteForm = {
                     pemeriksaanUmum: {
                         keadaanUmum: data.pemeriksaanUmum?.keadaanUmum || "",
                         gcsEye: data.pemeriksaanUmum?.gcsEye || 0,
@@ -189,64 +104,43 @@ export default function ObjectivePage() {
                         ekstremitas: data.statusGeneralis?.ektremitas || "",
                         lainnya: data.statusGeneralis?.lainnya || "",
                     },
-                    pemeriksaanPenunjang: data.pemeriksaanPenunjang || ""
-                }
-
-                setForm(prefilledForm)
-
+                    pemeriksaanPenunjang: data.pemeriksaanPenunjang || "",
+                };
+                setForm(prefilled);
             } catch (error) {
-                console.error("Gagal load objective: ", error)
+                console.error("Gagal load objective: ", error);
             }
-        }
-
-        fetchData()
-
+        };
+        fetchData();
     }, [rekamMedisId]);
 
-
-
     return (
-        <ScrollView className="p-4 ">
+        <ScrollView className="p-4">
             <PemeriksaanUmumSection
-                form={{
-                    keadaanUmum: form.pemeriksaanUmum.keadaanUmum,
-                    gcsEye: form.pemeriksaanUmum.gcsEye,
-                    gcsVerbal: form.pemeriksaanUmum.gcsVerbal,
-                    gcsMotor: form.pemeriksaanUmum.gcsMotor,
-                }}
-                onChange={handleChangePemeriksaanUmum}
+                form={form.pemeriksaanUmum}
+                onChange={(key, value) => updateForm("pemeriksaanUmum", key, value)}
+                readonly={isReadOnly}
             />
             <TandaVitalSection
-                form={{
-                    tekananDarah: form.tandaVital.tekananDarah,
-                    nadi: form.tandaVital.nadi,
-                    suhu: form.tandaVital.suhu,
-                    frekuensiNafas: form.tandaVital.frekuensiNafas,
-                }}
-                onChange={handleChangeTandaVital}
+                form={form.tandaVital}
+                onChange={(key, value) => updateForm("tandaVital", key, value)}
+                readonly={isReadOnly}
             />
             <AntropometriSection
-                form={{
-                    beratBadan: form.antropometri.beratBadan,
-                    tinggiBadan: form.antropometri.tinggiBadan,
-                    imt: form.antropometri.imt
-                }}
-                onChange={handleChangeAntropometri}
+                form={form.antropometri}
+                onChange={(key, value) => updateForm("antropometri", key, value)}
+                readonly={isReadOnly}
             />
             <StatusGeneralisSection
-                form={{
-                    kepalaLeher: form.statusGeneralis.kepalaLeher,
-                    thorax: form.statusGeneralis.thorax,
-                    abdomen: form.statusGeneralis.abdomen,
-                    ekstremitas: form.statusGeneralis.ekstremitas,
-                    lainnya: form.statusGeneralis.lainnya
-                }}
-                onChange={handleChangeStatusGeneralis}
+                form={form.statusGeneralis}
+                onChange={(key, value) => updateForm("statusGeneralis", key, value)}
+                readonly={isReadOnly}
             />
             <PemeriksaanPenunjangSection
                 value={form.pemeriksaanPenunjang}
-                onChange={(v) => handleChangePemeriksaanPenunjang("pemeriksaanPenunjang", v)}
+                onChange={(v) => updateForm("pemeriksaanPenunjang", "pemeriksaanPenunjang", v)}
+                readonly={isReadOnly}
             />
         </ScrollView>
-    )
+    );
 }

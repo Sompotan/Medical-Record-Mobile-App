@@ -1,4 +1,5 @@
 import API from "@/services/api";
+import {DetailPasienWithRiwayat, PasienDitangani} from "@/types/dokter/types";
 
 export const getProfileDokter = async () => {
     const res = await API.get('/dokter/profil');
@@ -37,5 +38,15 @@ export const mulaiPemeriksaan = async (id: string) => {
 
 export const getPasienInfo = async (rekamMedisId: string) => {
     const res = await API.get(`/dokter/rekam-medis/${rekamMedisId}/pasien-info`)
+    return res.data;
+}
+
+export const getPasienDitangani = async () : Promise<PasienDitangani[]> => {
+    const res = await API.get('/dokter/pasien')
+    return res.data;
+}
+
+export const getDetailPasienDitangani = async(id: string): Promise<DetailPasienWithRiwayat> => {
+    const res = await API.get(`/dokter/pasien/${id}`)
     return res.data;
 }

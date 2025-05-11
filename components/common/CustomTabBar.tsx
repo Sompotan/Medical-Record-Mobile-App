@@ -1,19 +1,27 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import {Image, Pressable, Text, View} from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { twMerge } from "tailwind-merge";
-import {useLocalSearchParams} from "expo-router";
-import {useEffect, useState} from "react";
-import {getPasienInfo} from "@/services/dokterAPI";
-import {User} from "lucide-react-native";
+import { useLocalSearchParams, useGlobalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { getPasienInfo } from "@/services/dokterAPI";
+import { User } from "lucide-react-native";
+import HeadersBackButton from "@/components/pasien/HeadersBackButton"; // ✅ import
 
 export default function CustomTabBar({
                                          state,
                                          descriptors,
                                          navigation,
                                      }: BottomTabBarProps) {
+    const router = useRouter();
+    const { id: rekamMedisId } = useLocalSearchParams();
+    const { readonly } = useGlobalSearchParams();
+    const isReadonly = readonly === "true";
 
-    const { id: rekamMedisId } = useLocalSearchParams()
-    const [pasienInfo, setPasienInfo] = useState<{nama_pasien: string, medicalRecordNumber: string, fotoProfil: string} | null>(null)
+    const [pasienInfo, setPasienInfo] = useState<{
+        nama_pasien: string;
+        medicalRecordNumber: string;
+        fotoProfil: string;
+    } | null>(null);
 
     useEffect(() => {
         const fetchPasienInfo = async () => {
@@ -22,28 +30,31 @@ export default function CustomTabBar({
                 setPasienInfo({
                     fotoProfil: response.fotoProfil,
                     nama_pasien: response.nama_pasien,
-                    medicalRecordNumber: response.medicalRecordNumber
-
-                })
+                    medicalRecordNumber: response.medicalRecordNumber,
+                });
             } catch (error) {
-                console.error("Gagal mengambil pasien info: ", error)
+                console.error("Gagal mengambil pasien info: ", error);
             }
+        };
 
-        }
-
-        fetchPasienInfo()
+        fetchPasienInfo();
     }, [rekamMedisId]);
 
-
-
     return (
-        <View className="border-t border-gray-200 bg-white">
+        <View className="border-t border-gray-200 bg-white px-2 py-2">
+            {/* ✅ Tombol back jika readonly */}
+            {isReadonly && (
+                <View className="px-2 mt-2">
+                    <HeadersBackButton title="Rekam Medis" onPress="/dokter/pasien"/>
+                </View>
+            )}
+
             {pasienInfo && (
-                <View className="py-2 flex flex-row items-center gap-4 px-2">
+                <View className="py-2 flex flex-row items-center gap-4 px-4">
                     {pasienInfo.fotoProfil ? (
                         <Image
                             source={{ uri: pasienInfo.fotoProfil }}
-                            className="w-32 h-32 rounded-full"
+                            className="w-16 h-16 rounded-full"
                             resizeMode="cover"
                         />
                     ) : (
@@ -57,17 +68,12 @@ export default function CustomTabBar({
                     </View>
                 </View>
             )}
+
             <View className="flex-row justify-around ">
                 {state.routes.map((route, index) => {
                     const { options } = descriptors[route.key];
-
                     const label =
-                        options.tabBarLabel !== undefined
-                            ? options.tabBarLabel
-                            : options.title !== undefined
-                                ? options.title
-                                : route.name;
-
+                        options.tabBarLabel ?? options.title ?? route.name;
                     const isFocused = state.index === index;
 
                     const onPress = () => {
@@ -105,12 +111,10 @@ export default function CustomTabBar({
                             ) : (
                                 <View className="h-[2px] w-full mt-2 rounded-full bg-gray-300" />
                             )}
-
                         </Pressable>
                     );
                 })}
             </View>
         </View>
-
     );
 }

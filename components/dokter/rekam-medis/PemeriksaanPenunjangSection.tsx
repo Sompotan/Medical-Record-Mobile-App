@@ -1,16 +1,21 @@
-import {Text, TextInput, View} from "react-native";
-
+import { Text, TextInput, View } from "react-native";
 
 export type PemeriksaanPenunjangSectionProps = {
     value: string;
     onChange: (value: string) => void;
-}
+    readonly?: boolean;
+};
 
-export default function PemeriksaanPenunjangSection({value, onChange}: PemeriksaanPenunjangSectionProps) {
+export default function PemeriksaanPenunjangSection({
+                                                        value,
+                                                        onChange,
+                                                        readonly = false,
+                                                    }: PemeriksaanPenunjangSectionProps) {
     return (
         <View className="mb-10 bg-white rounded-xl p-4 shadow-md">
             <Text className="font-medium text-xl mb-2">Pemeriksaan Penunjang</Text>
             <TextInput
+                editable={!readonly}
                 multiline
                 textAlignVertical="top"
                 placeholder="Masukkkan catatan pemeriksaan penunjang seperti hasil lab, radiologi, dsb..."
@@ -19,5 +24,5 @@ export default function PemeriksaanPenunjangSection({value, onChange}: Pemeriksa
                 onChangeText={onChange}
             />
         </View>
-    )
+    );
 }

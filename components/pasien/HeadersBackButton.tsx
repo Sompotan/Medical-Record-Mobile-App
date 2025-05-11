@@ -4,14 +4,17 @@ import {useRouter} from "expo-router";
 
 type HeaderBackButtonProps = {
     title: string;
+    onPress?: string;
 }
 
-export default function HeadersBackButton({title}: HeaderBackButtonProps) {
+export default function HeadersBackButton({title, onPress}: HeaderBackButtonProps) {
     const router = useRouter();
+
     return (
         <View className="flex flex-row items-center gap-4 px-2">
             <TouchableOpacity
-                onPress={() => router.back()}
+                // @ts-ignore
+                onPress={onPress ? () => router.replace(onPress) :  () => router.back()}
             >
                 <Left />
             </TouchableOpacity>

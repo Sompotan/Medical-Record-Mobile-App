@@ -43,7 +43,7 @@ export default function DetailRekamMedisPage() {
     }
 
     return (
-        <View className="flex-1 p-4">
+        <View className="flex-1 p-4e">
             <HeadersBackButton title="Detail Rekam Medis" />
             <ScrollView className="p-4">
                 <DetailRekamMedisCard data={data} />
