@@ -11,7 +11,7 @@ export default function HeadersBackButton({title, onPress}: HeaderBackButtonProp
     const router = useRouter();
 
     return (
-        <View className="flex flex-row items-center gap-4 px-2">
+        <View className="flex flex-row items-center gap-4 px-2 pb-4">
             <TouchableOpacity
                 // @ts-ignore
                 onPress={onPress ? () => router.replace(onPress) :  () => router.back()}

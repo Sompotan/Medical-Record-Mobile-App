@@ -36,9 +36,15 @@ export default function PasienPage() {
 
 
     return (
-        <View className="flex-1 p-4">
+        <ScrollView
+            className="flex-1 p-4"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+                flexGrow: 1
+            }}
+        >
             <HeadersBackButton title="Daftar Pasien"/>
-            <ScrollView className="p-4">
+            <View className="p-4">
                 {data.map((item) => (
                     <PasienDitanganiCard
                         key={item.id}
@@ -49,7 +55,7 @@ export default function PasienPage() {
                         id={item.id}
                     />
                 ))}
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     )
 }

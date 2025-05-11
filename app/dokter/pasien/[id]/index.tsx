@@ -5,6 +5,7 @@ import {DetailPasienWithRiwayat} from "@/types/dokter/types";
 import {getDetailPasienDitangani} from "@/services/dokterAPI";
 import PasienProfilCard from "@/components/dokter/pasien/PasienProfilCard";
 import RiwayatRekamMedisCard from "@/components/dokter/pasien/RiwayatRekamMedisCard";
+import HeadersBackButton from "@/components/pasien/HeadersBackButton";
 
 export default function DetailPasienPage(){
     const { id } = useLocalSearchParams()
@@ -46,16 +47,28 @@ export default function DetailPasienPage(){
 
 
     return (
-        <ScrollView className="flex-1 px-4 py-6">
+        <ScrollView
+            className="flex-1 px-4 py-6"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+                flexGrow: 1,
+            }}
+        >
+            <HeadersBackButton title="Detail Pasien"/>
             <PasienProfilCard
                 namaLengkap={data.pasien.namaLengkap}
                 medicalRecordNumber={data.pasien.medicalRecordNumber}
-                tanggalLahir={new Date(data.pasien.tanggalLahir).toLocaleDateString("id-ID")}
+                tanggalLahir={new Date(data.pasien.tanggalLahir).toLocaleDateString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })}
                 gender={data.pasien.gender}
                 fotoProfil={data.pasien.fotoProfil}
             />
 
-            <View>
+            <View className="p-4 bg-white mt-4 rounded-xl shadow-md shadow-gray-800 " >
+                <Text className="text-2xl font-semibold pb-4">Riwayat Rekam Medis</Text>
                 {data.rekamMedis.map((item, index) => (
                     <RiwayatRekamMedisCard
                         key={item.id}

@@ -45,7 +45,7 @@ export default function CustomTabBar({
             {/* ✅ Tombol back jika readonly */}
             {isReadonly && (
                 <View className="px-2 mt-2">
-                    <HeadersBackButton title="Rekam Medis" onPress="/dokter/pasien"/>
+                    <HeadersBackButton title="Rekam Medis"/>
                 </View>
             )}
 

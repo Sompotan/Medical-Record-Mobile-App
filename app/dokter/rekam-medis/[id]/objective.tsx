@@ -115,7 +115,13 @@ export default function ObjectivePage() {
     }, [rekamMedisId]);
 
     return (
-        <ScrollView className="p-4">
+        <ScrollView
+            className="p-4"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+                flexGrow: 1,
+            }}
+        >
             <PemeriksaanUmumSection
                 form={form.pemeriksaanUmum}
                 onChange={(key, value) => updateForm("pemeriksaanUmum", key, value)}

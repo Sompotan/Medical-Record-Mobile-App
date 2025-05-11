@@ -97,7 +97,13 @@ export default function AssessmentPage() {
     }, [diagnosisList], 1200);
 
     return (
-        <ScrollView className="px-4">
+        <ScrollView
+            className="px-4"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+                flexGrow: 1
+            }}
+        >
             {!isReadonly && (
                 <>
                     <DiagnosisCombobox label="Diagnosa" value={selectedDiagnosis} onChange={setSelectedDiagnosis} />

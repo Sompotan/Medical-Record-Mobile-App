@@ -80,7 +80,14 @@ export default function SubjectivePage() {
     }, [rekamMedisId]);
 
     return (
-        <ScrollView className="p-4" contentContainerStyle={{ paddingBottom: 20 }}>
+        <ScrollView
+            className="p-4"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+                paddingBottom: 20,
+                flexGrow: 1
+        }}
+        >
             <TextInputField
                 label="Keluhan Utama"
                 placeholder="Masukkan keluhan utama"

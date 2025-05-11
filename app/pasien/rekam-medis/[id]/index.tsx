@@ -43,9 +43,15 @@ export default function DetailRekamMedisPage() {
     }
 
     return (
-        <View className="flex-1 p-4e">
+        <View className="flex-1 p-4">
             <HeadersBackButton title="Detail Rekam Medis" />
-            <ScrollView className="p-4">
+            <ScrollView
+                className="p-4"
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{
+                    flexGrow:1
+                }}
+            >
                 <DetailRekamMedisCard data={data} />
             </ScrollView>
         </View>

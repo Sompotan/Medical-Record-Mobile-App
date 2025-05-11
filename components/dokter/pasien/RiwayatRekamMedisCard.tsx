@@ -6,7 +6,7 @@ export default function RiwayatRekamMedisCard({id, diagnosis, dokter, tanggal, o
     return (
         <TouchableOpacity
             onPress={onPress}
-            className="bg-white p-4 border rounded-md mb-3"
+            className="bg-white py-4 px-6 rounded-xl shadow-md shadow-gray-800 elevation mb-3"
         >
             <Text className="font-semibold">{diagnosis}</Text>
             <Text className="text-sm text-gray-500 mt-1">{dokter}</Text>

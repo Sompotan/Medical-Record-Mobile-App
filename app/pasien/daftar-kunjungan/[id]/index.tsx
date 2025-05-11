@@ -72,8 +72,10 @@ export default function FormKunjunganPage() {
             <HeadersBackButton title="Daftar Kunjungan"/>
             <ScrollView
                 className="px-6"
+                keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{
                     paddingBottom: 100,
+                    flexGrow: 1
                 }}
             >
                 <DokterInfoCard

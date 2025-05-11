@@ -15,29 +15,36 @@ export default function DetailRekamMedisCard({data}: DetailRekamMedisCardProps) 
 
 
     return (
-        <View className="space-y-4">
-            <View className="bg-white rounded-md p-4">
-                <Text className="font-bold mb-1">Tanda Vital</Text>
-                <View className="flex-row justify-between">
-                    <Text>Tekanan Darah{"\n"}<Text className="font-semibold">{tekanan}</Text></Text>
-                    <Text>Detak Jantung{"\n"}<Text className="font-semibold">{detak}</Text></Text>
+        <View className="flex-1 flex-col gap-4">
+            <View className="bg-white rounded-xl shadow-md shadow-gray-800 p-4">
+                <Text className="font-bold mb-4 text-2xl">Tanda Vital</Text>
+                <View className="flex-row gap-20">
+                    <View>
+                        <Text className="text-gray-500">Tekanan Darah</Text>
+                        <Text className="font-semibold">{tekanan}</Text>
+                    </View>
+                    <View>
+                        <Text className="text-gray-500">Detak Jantung</Text>
+                        <Text className="font-semibold">{detak}</Text>
+                    </View>
                 </View>
             </View>
 
-            <View className="bg-white rounded-md p-4">
-                <Text className="font-bold mb-1">Keluhan</Text>
+            <View className="bg-white rounded-xl shadow-md shadow-gray-800 p-4">
+                <Text className="font-bold mb-2 text-2xl">Keluhan</Text>
                 <Text>{keluhan}</Text>
             </View>
 
-            <View className="bg-white rounded-md p-4">
-                <Text className="font-bold mb-1">Diagnosa</Text>
-                <Text>{diagnosisDeskripsi}</Text>
+            <View className="bg-white rounded-xl shadow-md shadow-gray-800 p-4">
+                <Text className="font-bold mb-1 text-2xl">Diagnosa</Text>
+                <Text className="mb-4 text-xl font-semibold">{diagnosisDeskripsi}</Text>
+                <Text className="text-gray-500">Deskripsi</Text>
                 <Text>{diagnosis}</Text>
             </View>
 
             {resep.length > 0 && (
-                <View className="bg-white rounded-md p-4">
-                    <Text className="font-bold mb-1">Resep Obat</Text>
+                <View className="bg-white rounded-xl shadow-md shadow-gray-800 p-4">
+                    <Text className="font-bold mb-3 text-2xl">Resep Obat</Text>
                     {resep.map((item, i) => (
                         <View key={i} className="flex-row justify-between mb-2">
                             <View>

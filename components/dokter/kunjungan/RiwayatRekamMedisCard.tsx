@@ -38,15 +38,15 @@ export default function RiwayatRekamMedisCard({pasienId}: RiwayatRekamMedisCardP
     return (
         <View>
             <Text className="text-[24px] font-semibold mb-3">Riwayat Rekam Medis</Text>
-            {/*{rekamMedisList.map((rm) => (*/}
-            {/*    // <RekamMedisCard*/}
-            {/*    //     key={rm.id}*/}
-            {/*    //     id={rm.id}*/}
-            {/*    //     tanggal={rm.tanggal}*/}
-            {/*    //     pasien={rm.pasien}*/}
-            {/*    //     dokter={rm.dokter}*/}
-            {/*    // />*/}
-            {/*))}*/}
+            {rekamMedisList.map((rm) => (
+                <RekamMedisCard
+                    key={rm.id}
+                    id={rm.id}
+                    tanggal={rm.tanggal}
+                    pasien={rm.pasien}
+                    dokter={rm.dokter}
+                />
+            ))}
         </View>
     )
 }

@@ -99,7 +99,14 @@ export default function PlanningNotePage() {
 
     return (
         <View className="flex-1">
-            <ScrollView className="px-4 pb-8">
+            <ScrollView
+                className="px-4 pb-8"
+                keyboardShouldPersistTaps="handled"
+                contentContainerStyle={{
+                    flexGrow: 1,
+                    paddingBottom: 80
+                }}
+            >
                 <JenisLayananSelect
                     value={jenisLayanan}
                     onChange={setJenisLayanan}
