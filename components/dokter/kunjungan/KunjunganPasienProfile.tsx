@@ -8,6 +8,7 @@ export type KunjunganPasienProfileProps = {
     tanggal_lahir?: string;
     gender?: string;
     alasan_kunjungan?: string;
+    status?: string;
 }
 
 export default function KunjunganPasienProfile({

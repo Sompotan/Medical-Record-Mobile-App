@@ -55,6 +55,7 @@ export default function Beranda() {
                 <CardButton
                     icon={<MedicalHistory />}
                     title={"Rekam Medis"}
+                    path="/pasien/rekam-medis"
                 />
             </View>
         </View>

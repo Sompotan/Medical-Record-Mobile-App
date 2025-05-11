@@ -1,6 +1,6 @@
 import {ActivityIndicator, FlatList, View} from "react-native";
 import CardKunjunganItem, {CardKunjunganItemProps} from "@/components/dokter/kunjungan/CardKunjunganItem";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {getAntrian} from "@/services/dokterAPI";
 import {useRouter} from "expo-router";
 
@@ -8,24 +8,30 @@ import {useRouter} from "expo-router";
 export default function CardKunjunganList() {
     const [data, setData] = useState<CardKunjunganItemProps[]>([])
     const [loading, setLoading] = useState(true)
+    const [refreshing, setRefreshing] = useState(false)
 
     const router = useRouter()
 
-    useEffect(() => {
-        const fetchAntrian = async () => {
-            try {
-                const result = await getAntrian();
-                setData(result)
-            } catch (error) {
-                console.error("Gagal mengambil antrian kunjungan: ", error)
-            } finally {
-                setLoading(false)
-            }
+    const fetchAntrian = async () => {
+        try {
+            const result = await getAntrian();
+            setData(result)
+        } catch (error) {
+            console.error("Gagal mengambil antrian kunjungan: ", error)
+        } finally {
+            setLoading(false)
         }
+    }
 
+
+    useEffect(() => {
         fetchAntrian()
-
     }, []);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        fetchAntrian()
+    }, [])
 
     if (loading){
         return (
@@ -50,10 +56,13 @@ export default function CardKunjunganList() {
                     }}
                 />
             )}
+            ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
             contentContainerStyle={{
                 paddingTop: 16,
                 paddingBottom: 8
             }}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
         />
     )
 }

@@ -65,3 +65,8 @@ export const fetchObatOptions = async (keyword: string): Promise<ObatOption[]> =
     const res = await API.get(`/dokter/obat?search=${encodeURIComponent(keyword)}`)
     return res.data
 }
+
+export const akhiriPemeriksaan = async (kunjunganId: string) => {
+    return await API.patch(`/dokter/kunjugan/${kunjunganId}/akhiri-pemeriksaan`)
+}
+

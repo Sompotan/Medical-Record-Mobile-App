@@ -58,7 +58,7 @@ export default function DetailKunjunganPasien() {
             if (!rekamMedisId) throw new Error("Rekam medis ID tidak ditemukan");
 
             // @ts-ignore
-            router.push(`/dokter/rekam-medis/${rekamMedisId}`)
+            router.push(`/dokter/rekam-medis/${rekamMedisId}?kunjunganId=${id}`)
         } catch (error) {
             console.error("Gagal memulai pemeriksaan: ", error)
         }
@@ -93,21 +93,23 @@ export default function DetailKunjunganPasien() {
 
             <View className="absolute bottom-4 left-4 right-4">
                 <View>
-                    <TouchableOpacity className="bg-black py-4 rounded-lg" onPress={handleSubmit}>
-                        <Text className="text-white text-center font-semibold">Mulai Pemeriksaan</Text>
-                    </TouchableOpacity>
 
-                    {draftRekamMedisId && (
+
+                    {pasien?.status === "DalamPemeriksaan" ? (
                         <TouchableOpacity
                             className="bg-gray-700 py-4 rounded-lg mt-2"
                             onPress={() =>
                                 // @ts-ignore
-                                router.push(`/dokter/rekam-medis/${draftRekamMedisId}`)
+                                router.push(`/dokter/rekam-medis/${draftRekamMedisId}?kunjunganId=${id}`)
                             }
                         >
                             <Text className="text-white text-center font-semibold">Buka Draft Sebelumnya</Text>
                         </TouchableOpacity>
-                    )}
+                    ) : (
+                        <TouchableOpacity className="bg-black py-4 rounded-lg" onPress={handleSubmit}>
+                            <Text className="text-white text-center font-semibold">Mulai Pemeriksaan</Text>
+                        </TouchableOpacity>
+                    ) }
                 </View>
 
             </View>

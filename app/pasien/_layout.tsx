@@ -15,6 +15,9 @@ export default function PasienLayout() {
                 <Stack.Screen name="daftar-kunjungan" options={{
                     headerShown: false,
                 }} />
+                <Stack.Screen name="rekam-medis" options={{
+                    headerShown: false,
+                }} />
             </Stack>
         </KeyboardAvoidingView>
 

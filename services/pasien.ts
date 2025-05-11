@@ -1,4 +1,5 @@
 import API from "@/services/api";
+import {RekamMedisItem} from "@/types/rekam-medis/types";
 
 export const getRiwayatKunjungan = async () => {
     const res = await API.get("/pasien/kunjungan");
@@ -26,5 +27,15 @@ export const daftarKunjungan = async (data: {
     alasanKunjungan: string;
 }) => {
     const res = await API.post(`/pasien/kunjungan`, data);
+    return res.data;
+}
+
+export const getRekamMedis = async () : Promise<RekamMedisItem[]> =>  {
+    const res = await API.get("/pasien/rekam-medis");
+    return res.data;
+}
+
+export const getRekamMedisById = async (id: string) => {
+    const res = await API.get(`/pasien/rekam-medis/${id}`)
     return res.data;
 }

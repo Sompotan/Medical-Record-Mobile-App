@@ -142,3 +142,12 @@ export type GetPlanningNoteResponse = {
     message: string;
     rencanaKlinis: RencanaEntry[];
 }
+
+export type RekamMedisItem = {
+    id: string;
+    tanggal: string;
+    dokter: string;
+    versi: "UTAMA" | "REVISI";
+    diagnosis: string;
+    kunjunganId: string;
+}
