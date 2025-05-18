@@ -46,7 +46,7 @@ export default function RencanaItemCard({
                     {item.resepObat.map((obat, i) => (
                         <View key={i} className="ml-2 mb-2">
                             <Text className="text-sm">
-                                • {getObatLabelById?.(obat.obatId) ?? `Obat ID: ${obat.obatId}`}
+                                • {obat.namaObat ?? getObatLabelById?.(obat.obatId) ?? `Obat ID: ${obat.obatId}`}
                             </Text>
                             <Text className="text-sm ml-2">Frekuensi: {obat.frekuensi}</Text>
                             <Text className="text-sm ml-2">Durasi: {obat.durasi}</Text>

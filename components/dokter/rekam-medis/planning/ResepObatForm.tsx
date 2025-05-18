@@ -121,6 +121,7 @@ export default function ResepObatForm({
             )}
 
             {value.map((item, index) => {
+
                 const obatLabel =
                     obatOptions.find((opt) => opt.id === item.obatId)?.label ||
                     item.obatId;

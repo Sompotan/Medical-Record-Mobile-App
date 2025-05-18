@@ -73,6 +73,7 @@ export type PlanningNoteForm = {
 
 export type ResepObatItem = {
     obatId: string;
+    namaObat?: string;
     frekuensi: string;
     durasi: string;
     aturan_pakai: string;
