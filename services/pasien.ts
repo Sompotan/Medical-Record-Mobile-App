@@ -39,3 +39,8 @@ export const getRekamMedisById = async (id: string) => {
     const res = await API.get(`/pasien/rekam-medis/${id}`)
     return res.data;
 }
+
+export const getStatusVerifikasi = async () => {
+    const res = await API.get("/pasien/verifikasi-status");
+    return res.data;
+};

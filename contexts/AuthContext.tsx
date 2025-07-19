@@ -14,6 +14,7 @@ interface AuthContextType {
     login: (userData: User) => Promise<void>;
     logout: () => Promise<void>;
     loading: boolean;
+    updateUser: (data: Partial<User>) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -51,8 +52,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await SecureStore.deleteItemAsync("token")
         router.replace("/auth/login")
     }
+
+    const updateUser = async (data: Partial<User>) => {
+        if (!user) return;
+        const updatedUser = { ...user, ...data };
+        setUser(updatedUser);
+        await SecureStore.setItemAsync("user", JSON.stringify(updatedUser));
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading}}>
+        <AuthContext.Provider value={{ user, login, logout, loading, updateUser}}>
             {children}
         </AuthContext.Provider>
     )
